@@ -1,0 +1,17 @@
+#main{
+    box-sizing: border-box;
+    overflow-y: scroll;
+    background-color:rgb(151, 172, 201);
+    border: 1px solid black;
+    width: 60vw;
+    height: 500px;
+    padding: 20px;
+}
+
+#body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 78px;
+    margin-bottom: 78px;
+}
