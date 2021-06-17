@@ -1,5 +1,6 @@
 import React from "react";
 import TodoItem from "./components/TodoItem";
+import Today from "./components/Today";
 import "./App.css"
 
 interface TodoAppProps {}
@@ -41,8 +42,9 @@ class TodoApp extends React.Component<TodoAppProps, TodoAppState> {
         <div id="main">
           <h2>TODO-LIST</h2>
           <form onSubmit={this.handleSubmit}>
-            <label htmlFor="new-todo" id="text">오늘은 무엇을 해야 하나요?</label><br/>
-            <input type="text" placeholder="할 일 추가하기" id="new-todo" value={this.state.newTodo} onChange={this.handleNewTodo} />
+            {Today}<br />
+            <label htmlFor="new-todo">무엇을 해야 하나요?</label><br/>
+            <input type="text" placeholder="할 일 추가하기" value={this.state.newTodo} onChange={this.handleNewTodo} />
             <button>Add #{this.state.todoItems.length + 1}</button><br /> <br/>
           </form>
           {
