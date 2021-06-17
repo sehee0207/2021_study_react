@@ -27,31 +27,42 @@ class TodoApp extends React.Component<TodoAppProps, TodoAppState> {
 
   handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const items = this.state.todoItems.concat(this.state.newTodo)
 
-    this.setState({
-      todoItems: items,
-      newTodo: "",
-    });
+    if(this.state.newTodo === ''){
+      alert('할 일을 추가해주세요')
+    }
+
+    else{
+      const items = this.state.todoItems.concat(this.state.newTodo)
+      this.setState({
+        todoItems: items,
+        newTodo: "",
+      });
+    }
   }
+
 
 
   render() {
     return (
       <div id="body">
         <div id="main">
-          <h2>TODO-LIST</h2>
-          <form onSubmit={this.handleSubmit}>
-            {Today}<br />
-            <label htmlFor="new-todo">무엇을 해야 하나요?</label><br/>
-            <input type="text" placeholder="할 일 추가하기" value={this.state.newTodo} onChange={this.handleNewTodo} />
-            <button>Add #{this.state.todoItems.length + 1}</button><br /> <br/>
-          </form>
-          {
-            this.state.todoItems.map((item, idx) => (
-              <TodoItem name={item} key={idx}/>
-            ))
-          }
+          <div id="menu">
+            <h2>TODO-LIST</h2>
+            <form onSubmit={this.handleSubmit}>
+              {Today}<br />
+              <label htmlFor="new-todo">무엇을 해야 하나요?</label><br/>
+              <input type="text" placeholder="할 일 추가하기" value={this.state.newTodo} onChange={this.handleNewTodo} />
+              <button >Add #{this.state.todoItems.length + 1}</button><br /> <br/>
+            </form>
+          </div>
+          <div id="list">
+            {
+              this.state.todoItems.map((item, idx) => (
+                <TodoItem inx={idx+1} name={item} key={idx}/>
+              ))
+            }
+            </div>
         </div>
       </div>
     )

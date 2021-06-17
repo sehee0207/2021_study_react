@@ -2,11 +2,12 @@ import React from "react";
 
 interface TodoItemProps {
   name: string;
+  inx: any;
 }
 
 function TodoItem(props: TodoItemProps) {
   return(
-    <div>- {props.name}</div>
+    <div>{props.inx +" : " + props.name}</div>
   )
 }
 
