@@ -3,7 +3,7 @@ import ChampionsList from './pages/ChampionsList';
 import {createGlobalStyle} from "styled-components";
 import Header from './components/Header';
 
-const MyGlobalStyle  = createGlobalStyle`
+const MyGlobalStyle = createGlobalStyle`
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -24,7 +24,7 @@ function App() {
   return (
     <>
       <MyGlobalStyle />
-      <Header headerHeight={120} />
+      <Header headerHeight={100}/>
       <ChampionsList />
     </>
   );
