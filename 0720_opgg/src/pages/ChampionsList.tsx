@@ -13,6 +13,7 @@ interface ChampionListState {
     allChampions : ChampionModel[];
     champions: ChampionModel[];
     type: string;
+    text: string;
 }
 
 const ChampionListPageWrapper = styled.div`
@@ -31,6 +32,7 @@ export default class ChampionsList extends React.Component<ChampionListProps, Ch
             allChampions: [],
             champions: [],
             type: "ALL",
+            text: "",
         }
     }
 
@@ -58,7 +60,15 @@ export default class ChampionsList extends React.Component<ChampionListProps, Ch
         });
     }
 
+    onChangeInput = (text: string) => {
+        this.setState({
+            text: text,
+            champions: this.searchChampion(text),
+        });
+    }
+
     filterChampions = (type: string) => {
+        document.querySelectorAll("input")[1].value = "";
         switch(type) {
             case "TOP":
                 return this.state.allChampions.filter(c => c.position!!.indexOf("탑") > -1);
@@ -80,6 +90,33 @@ export default class ChampionsList extends React.Component<ChampionListProps, Ch
         }
     }
 
+    searchChampion = (text: string) => {
+        var temp;
+        switch(this.state.type) {
+            case "TOP":
+                temp = this.state.allChampions.filter(c => c.position!!.indexOf("탑") > -1); break; 
+                
+            case "JUG":
+                temp = this.state.allChampions.filter(c => c.position!!.indexOf("정글") > -1); break;
+
+            case "MID":
+                temp = this.state.allChampions.filter(c => c.position!!.indexOf("미드") > -1); break;
+
+            case "ADC":
+                temp = this.state.allChampions.filter(c => c.position!!.indexOf("바텀") > -1); break;
+
+            case "SUP":
+                temp = this.state.allChampions.filter(c => c.position!!.indexOf("서포터") > -1); break;
+
+            default:
+                temp = this.state.allChampions; break;
+        }
+        if(text === ""){
+            return temp;
+        }
+        return temp.filter(c => c.name!!.indexOf(text) > -1);
+    }
+
     render() {
         return (
             <ChampionListPageWrapper>
@@ -93,7 +130,15 @@ export default class ChampionsList extends React.Component<ChampionListProps, Ch
                             <div className={classnames("item", {select: this.state.type === "ADC" })} onClick={this.onChangeType("ADC")}>바텀</div>
                             <div className={classnames("item", {select: this.state.type === "SUP" })} onClick={this.onChangeType("SUP")}>서포터</div>
                         </div>
-                        <input type="text" placeholder="챔피언 검색 (가렌, ㄱㄹ ... )" />
+                        <input
+                            type="text"
+                            placeholder="챔피언 검색 (가렌, ㄱㄹ ... )"
+                            onChange = {
+                                (e) => {
+                                    this.onChangeInput(e.target.value);
+                                }
+                             }
+                        />
                     </div>
                     <div className="list">
                         {
