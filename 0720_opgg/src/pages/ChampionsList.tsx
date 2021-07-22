@@ -4,6 +4,11 @@ import styled from "styled-components";
 import classnames from "classnames"
 import Champion from "../components/Champion";
 import ChampionModel from "../models/ChampionModel";
+import championTier from "../assets/icon-champion-p.png";
+import ChampionTrendItem from "../components/ChampionTrendItem";
+import ChampionTrendHeader from "../components/ChampionTrendHeader"
+import ChampionTrendToolbar from "../components/ChampionTrendToolbar";
+
 
 interface ChampionListProps {
 
@@ -14,6 +19,7 @@ interface ChampionListState {
     champions: ChampionModel[];
     type: string;
     text: string;
+    //search: string;
 }
 
 const ChampionListPageWrapper = styled.div`
@@ -33,6 +39,7 @@ export default class ChampionsList extends React.Component<ChampionListProps, Ch
             champions: [],
             type: "ALL",
             text: "",
+            //search: "",
         }
     }
 
@@ -66,6 +73,18 @@ export default class ChampionsList extends React.Component<ChampionListProps, Ch
             champions: this.searchChampion(text),
         });
     }
+
+    // 쌤코드
+    // onChangeSearch = (e: ChangeEvent<HTMLInputElement>) => {
+    //     const value = e.target.value;
+    //     if(value != ""){
+    //         const searchChamp = this.filterChampions(this.state.type).filter(champ => champ.name.includes(value));
+    //         this.setState({champions: searchChamp})
+    //     } else{
+    //         const champions = this.filterChampions(this.state.type);
+    //         this.setState({champions, search: value});
+    //     }
+    // }
 
     filterChampions = (type: string) => {
         document.querySelectorAll("input")[1].value = "";
@@ -130,15 +149,8 @@ export default class ChampionsList extends React.Component<ChampionListProps, Ch
                             <div className={classnames("item", {select: this.state.type === "ADC" })} onClick={this.onChangeType("ADC")}>바텀</div>
                             <div className={classnames("item", {select: this.state.type === "SUP" })} onClick={this.onChangeType("SUP")}>서포터</div>
                         </div>
-                        <input
-                            type="text"
-                            placeholder="챔피언 검색 (가렌, ㄱㄹ ... )"
-                            onChange = {
-                                (e) => {
-                                    this.onChangeInput(e.target.value);
-                                }
-                             }
-                        />
+                        <input type="text"placeholder="챔피언 검색 (가렌, ㄱㄹ ... )" onChange = {(e) => {this.onChangeInput(e.target.value);}}/>
+                        {/* <input type="text" placeholder="챔피언 검색 (가렌, ㄱㄹ ... )" onChange={this.onChangeSearch} value={this.state.search} /> */}
                     </div>
                     <div className="list">
                         {
@@ -155,7 +167,36 @@ export default class ChampionsList extends React.Component<ChampionListProps, Ch
                     </div>
                 </ChampionsWrapper>
                 <ChampionTrendWrapper>
-                    trends
+                    <div className="header">
+                        <div>챔피언 순위</div>
+                        <div className="item-wrap">
+                            <div className="item select">
+                                <img src={championTier} alt=""/>
+                                티어
+                            </div>
+                            <div className="item">승률</div>
+                            <div className="item">픽률</div>
+                            <div className="item">밴률</div>
+                        </div>
+                    </div>
+                    <div className="list">
+                        <ChampionTrendToolbar className="list-item toolbar">
+                            <div hidden={true}>전체</div>
+                            <div className="select">탑</div>
+                            <div>정글</div>
+                            <div>미드</div>
+                            <div>바텀</div>
+                            <div>서포터</div>
+                        </ChampionTrendToolbar>
+                        <ChampionTrendHeader className="list-item header">
+                            <div>#</div>
+                            <div>챔피언</div>
+                            <div>승률</div>
+                            <div>픽률</div>
+                            <div>티어</div>
+                        </ChampionTrendHeader>
+                        <ChampionTrendItem />
+                    </div>
                 </ChampionTrendWrapper>
             </ChampionListPageWrapper>
         )
@@ -165,7 +206,7 @@ export default class ChampionsList extends React.Component<ChampionListProps, Ch
 const ChampionsWrapper = styled.div`
     background-color: white;
     border-right: 1px solid #e9eff4;
-    & > .header {
+    & > .header{
         display: flex;
         justify-content: space-between;
         padding: 0 17px;
@@ -185,6 +226,7 @@ const ChampionsWrapper = styled.div`
                 box-shadow: 0px -3px 0px 0px #5383e8 inset;
                 color: #5383e8;
                 font-weight: bold;
+                border-bottom: 1px solid #5383e8;
             }
         }
 
@@ -210,4 +252,56 @@ const ChampionsWrapper = styled.div`
 const ChampionTrendWrapper = styled.div`
     flex: 1;
     background-color: white;
+
+    & > div.header{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #e9eff4;
+
+        font-weight: bold;
+        font-size: 14px;
+        padding: 0 20px;
+
+        & > .item-wrap{
+            display: flex;
+            color: rgba(0, 0, 0, .6);
+
+            & > .item{
+                display: flex;
+                align-items: center;
+                position: relative;
+                line-height: 60px;
+                padding: 0 5px;
+                margin: 0 10px;
+                cursor: pointer;
+            }
+
+            & > .item > img {
+                margin-right: 5px;
+            }
+
+            & > item:not(:last-child)::after {
+                content: "";
+                width: 1px;
+                height: 20px;
+                background-color: #eee;
+                position: absolute;
+                right: -10px;
+                top: 50%;
+                margin-top: -10px;
+            }
+
+            & > .item.select{
+                box-shadow: 0px -3px 0px 0px #5383e8 inset;
+                color: #5383e8;
+            }
+        }
+    }
+
+    & > .list {
+        height: 100vh;
+        background-color: #f7f7f7;
+        padding: 20px;
+    }
 `
