@@ -15,9 +15,11 @@ const ChampionTrendHeader = styled.div`
     padding: 15px;
     & > div{
         flex: 1;
+        
         font-size: 12px;
         &:nth-child(1){
-            flex: 0.1;
+            flex: 0.5;
+            text-align: center;
         }
 
         &:nth-child(2){
